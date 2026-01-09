@@ -1,9 +1,9 @@
 - # s-series-skill
   
-  | name           | description                | license                       |
-  | -------------- | -------------------------- | ----------------------------- |
-  | s-series-skill | Go HTTP 服务重构与整合规范 | Complete terms in LICENSE.txt |
-  
+  ---
+  name: s-series-skill
+  description: Go HTTP 服务重构与整合规范
+  license: Complete terms in LICENSE.txt
   ---
   
   ## 说明
