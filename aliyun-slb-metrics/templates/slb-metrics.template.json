@@ -1,0 +1,61 @@
+{
+  "scope": {
+    "resource_type": "SLB overview",
+    "scope_type": "global_account_snapshot",
+    "region_focus": "global",
+    "selection_basis": "Observed from the current Aliyun SLB overview session."
+  },
+  "collection": {
+    "source": "Aliyun SLB overview console",
+    "snapshot_date": "YYYY-MM-DD",
+    "dashboard_view": "SLB overview"
+  },
+  "preferred_period": {
+    "type": "current_state",
+    "snapshot_date": "YYYY-MM-DD",
+    "timezone": "Asia/Shanghai",
+    "alignment": "inventory_snapshot"
+  },
+  "intended_use": [
+    "weekly_report_appendix",
+    "load_balancer_inventory_review"
+  ],
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "families": {
+    "classic_slb": {
+      "total_count": 5,
+      "running_count": 5,
+      "recent_create_count": 0,
+      "expire_soon_count": 0,
+      "expired_count": 0,
+      "regions": [
+        {
+          "region_id": "global",
+          "instance_count": 5,
+          "running_count": 5
+        }
+      ]
+    },
+    "nlb": {
+      "total_count": 0,
+      "running_count": 0
+    },
+    "alb": {
+      "total_count": 0,
+      "running_count": 0,
+      "status": 0
+    }
+  },
+  "idle_risk": {
+    "classic_slb_idle_count": 0,
+    "idle_detection_scope": "global",
+    "idle_instance_ids": []
+  },
+  "report_highlights": [
+    "截至 YYYY-MM-DD，账号下共观测到 X 个经典型 SLB，全部处于运行状态。",
+    "当前未观测到闲置经典型 SLB。"
+  ],
+  "notes": [
+    "该文件记录的是 YYYY-MM-DD 当天的全局 SLB 快照，用于周报附录。"
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "scope": {
+    "resource_type": "RDS MySQL",
+    "region_id": "cn-shenzhen",
+    "region_name": "华南1（深圳）",
+    "instance_count": 2,
+    "selection_basis": "当前已登录阿里云会话下，深圳地域可见的 MySQL RDS 实例"
+  },
+  "preferred_period": {
+    "type": "week_cycle_proxy_by_snapshot_day",
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "timezone": "Asia/Shanghai",
+    "alignment": "report_day_snapshot_as_week_proxy"
+  },
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "report_highlights": [
+    "两台 MySQL RDS 聚合平均 CPU 使用率约为 XX.XX%，内存使用率约为 XX.XX%。",
+    "两台 MySQL RDS 聚合平均磁盘利用率约为 XX.XX%，连接使用率约为 XX.XX%。",
+    "聚合平均 QPS 约为 XXX.XX，慢查询速率整体接近 0。"
+  ],
+  "aggregate_metrics": {
+    "cpu_usage_percent": {
+      "status": "ok",
+      "metric_name": "cpu_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": XX.XX,
+        "latest_value": XX.XX
+      }
+    },
+    "memory_usage_percent": {
+      "status": "ok",
+      "metric_name": "memory_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": XX.XX,
+        "latest_value": XX.XX
+      }
+    },
+    "disk_usage_percent": {
+      "status": "ok",
+      "metric_name": "disk_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": XX.XX,
+        "latest_value": XX.XX
+      }
+    },
+    "connection_usage_percent": {
+      "status": "ok",
+      "metric_name": "connection_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": XX.XX,
+        "latest_value": XX.XX
+      }
+    },
+    "qps": {
+      "status": "ok",
+      "metric_name": "qps",
+      "unit": "count",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": XXX.XX,
+        "latest_value": XXX.XX
+      }
+    }
+  },
+  "database_risk_metrics": {
+    "notes": [
+      "当前文件以 YYYY-MM-DD 当天可见 DAS 聚合值代理本周风险画像。",
+      "row_lock_wait_time_avg_ms 与 row_lock_waits_per_sec 用于观察 InnoDB 行锁等待时延与频率。"
+    ],
+    "aggregate": {
+      "slow_queries_per_sec": {
+        "status": "ok",
+        "metric_name": "slow_queries_per_sec",
+        "unit": "count",
+        "summary": {
+          "sample_count": 2,
+          "point_value_avg": X.XXX,
+          "latest_value": X.XX
+        }
+      }
+    }
+  },
+  "instances": [
+    {
+      "instance": {
+        "id": "rr-xxxxxxxxxxxx",
+        "name": "实例名称",
+        "role": "slave"
+      },
+      "metrics": {
+        "cpu_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        },
+        "memory_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        },
+        "disk_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        },
+        "total_session_count": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        },
+        "qps": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XXX.XX,
+            "latest_value": XXX.XX
+          }
+        },
+        "tps": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        },
+        "connection_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": XX.XX,
+            "latest_value": XX.XX
+          }
+        }
+      }
+    }
+  ],
+  "notes": [
+    "该文件基于 YYYY-MM-DD 当天 DAS 指标摘要生成，用于代理 YYYY-MM-DD 至 YYYY-MM-DD 的周报 MySQL 视图。",
+    "后续如需要严格周窗口统计，应补充完整周时间序列导出。"
+  ]
+}

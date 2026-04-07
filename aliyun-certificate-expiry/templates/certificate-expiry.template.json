@@ -1,0 +1,51 @@
+{
+  "scope": "global",
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "intended_use": "weekly_report_appendix_and_expiry_risk_tracking",
+  "collection": {
+    "product": "aliyun-cas",
+    "console": "ssl-certificate-management-v2",
+    "source_type": [
+      "console_snapshot"
+    ],
+    "resource_scope": "账号全部资源",
+    "console_region": "cn-hangzhou"
+  },
+  "overview": {
+    "certificate_total": 3,
+    "reminder_not_enabled": 3,
+    "undeployed_cloud_products": 0,
+    "pending_renewal": 0
+  },
+  "certificates": [
+    {
+      "name": "example.com_XXXXXXXX",
+      "resource_id": "cas-upload-xxxxxxxx",
+      "cert_identifier": "XXXXXXXX-cn-hangzhou",
+      "brand": "ZeroSSL",
+      "algorithm": "ECC_256",
+      "status": "上传成功",
+      "bound_domains": [
+        "example.com",
+        "*.example.com"
+      ],
+      "remaining_days_ui": 19,
+      "expires_on": "YYYY-MM-DD",
+      "deployed": false
+    }
+  ],
+  "report_compatibility": {
+    "appendix_ready": true,
+    "summary_key": "证书到期提醒",
+    "suggested_summary": "XX 天内到期 X 张（最早 YYYY-MM-DD），且 X 张未开启提醒。"
+  },
+  "report_highlights": [
+    "当前 SSL 证书管理 V2.0 中共有 X 张上传证书。",
+    "X 张证书的到期提醒均未开启。",
+    "当前没有已部署到云产品的证书，也没有待续费证书。"
+  ],
+  "notes": [
+    "本次统计基于数字证书管理服务 -> SSL证书管理 V2.0 -> 上传证书列表页。",
+    "剩余天数采用控制台直接展示的 UI 数值 remaining_days_ui。"
+  ]
+}

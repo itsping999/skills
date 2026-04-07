@@ -1,0 +1,37 @@
+{
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "period": {
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "snapshot_date": "YYYY-MM-DD",
+    "timezone": "Asia/Shanghai"
+  },
+  "total_instances": 26,
+  "metric_scope": [
+    "CPUUtilization",
+    "vm.MemoryUtilization",
+    "vm.DiskUtilization(mount=/)",
+    "concurrentConnections"
+  ],
+  "notes": [
+    "本文件基于 YYYY-MM-DD 当天 ECS 控制台监控快照生成，用于代理 YYYY-MM-DD 至 YYYY-MM-DD 的周报 ECS 视图。",
+    "当前按全量 N 台实例拉取 CPU、内存、磁盘和连接数四项核心指标。"
+  ],
+  "items": [
+    {
+      "instance_id": "i-xxxxxxxxxxxx",
+      "instance_name": "实例名称",
+      "region_id": "cn-shenzhen",
+      "zone_id": "cn-shenzhen-b",
+      "status": "Running",
+      "cpu_cores": 2,
+      "memory_mib": 4096,
+      "metrics": {
+        "cpu": { "status": "ok", "samples": 958, "avg": XX.XX, "latest": XX.XX },
+        "memory": { "status": "ok", "samples": 958, "avg": XX.XX, "latest": XX.XX },
+        "disk": { "status": "ok", "samples": 958, "avg": XX.XX, "latest": XX.XX, "mountpoint": "/" },
+        "conn": { "status": "ok", "samples": 955, "avg": XXXX.XX, "latest": XXXX }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "scope": "cn-hangzhou",
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "intended_use": "weekly_report_appendix_and_communication_cost_tracking",
+  "collection": {
+    "product": "aliyun-voice-service",
+    "console": "dyvms",
+    "source_type": [
+      "console_snapshot",
+      "network_api"
+    ],
+    "region": "cn-hangzhou",
+    "service_name": "语音服务"
+  },
+  "preferred_period": {
+    "type": "current_bill_month_to_date",
+    "bill_month": "YYYY-MM",
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "source": "费用统计 -> 账单"
+  },
+  "usage_overview": {
+    "payable_bill_total_amount": XX.XX,
+    "original_total_amount": XX.XX,
+    "discount_total_amount": 0,
+    "items": [
+      {
+        "commodity_code": "dyvms_voiceNotify_public_cn",
+        "commodity_name": "语音通知",
+        "expense_item_name": "语音通知-专属",
+        "use_amount": 251,
+        "total_use_amount": 251,
+        "payable_bill_amount": XX.XX,
+        "original_amount": XX.XX,
+        "discount_amount": 0,
+        "resource_pack_deduction_amount": 0
+      }
+    ]
+  },
+  "international_split": {
+    "status": "not_observed",
+    "reason": "当前账单仅看到国内线路商品。"
+  },
+  "report_compatibility": {
+    "appendix_ready": true,
+    "exact_week_cycle_alignment": false,
+    "reason": "语音服务控制台当前稳定可见的是账单月累计用量与金额，不是按周拆分。"
+  },
+  "report_highlights": [
+    "语音服务 YYYY-MM 月当前仅观测到国内语音通知商品，计费用量 XXX。",
+    "本月账单金额 XX.XX 元，未观测到资源包抵扣或优惠抵扣。"
+  ],
+  "notes": [
+    "本次数据来自费用统计页面的账单接口 GetUserBill。"
+  ]
+}

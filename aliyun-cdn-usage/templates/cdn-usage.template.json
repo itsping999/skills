@@ -1,0 +1,84 @@
+{
+  "scope": {
+    "resource_type": "CDN resource package usage",
+    "scope_type": "global_account_usage",
+    "selection_basis": "当前已登录阿里云会话下，综合 CDN 概览页的月累计用量/带宽摘要与资源包管理页的有效资源包总量/剩余量"
+  },
+  "collection": {
+    "source": "Aliyun CDN console",
+    "dashboard_view": "CDN 概览 + 资源包管理",
+    "apis_observed": ["DescribeUserDomains"],
+    "secondary_signals": [
+      "近7天带宽峰值",
+      "概览页资源包计费看板",
+      "资源包管理页有效资源包列表"
+    ]
+  },
+  "preferred_period": {
+    "primary_window": "current_month_to_date",
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "secondary_window": "recent_7d_peak_bandwidth",
+    "timezone": "Asia/Shanghai"
+  },
+  "intended_use": [
+    "weekly_report_capacity_context",
+    "cdn_cost_and_package_review"
+  ],
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "domain_inventory": {
+    "total_count": 8,
+    "online_count": 8,
+    "domains": [
+      {
+        "domain_name": "example.com",
+        "coverage": "global",
+        "cdn_type": "web",
+        "status": "online",
+        "source_type": "oss"
+      }
+    ]
+  },
+  "usage_overview": {
+    "recent_7d_peak_bandwidth": {
+      "value": XXX.XX,
+      "unit": "Mbps",
+      "observed_at": "YYYY-MM-DD HH:MM:SS"
+    },
+    "package_usage_by_region": [
+      {
+        "package_type": "下行流量",
+        "region_label": "中国大陆",
+        "package_total": "XXX.XX TB",
+        "current_month_usage": "XXX.XX GB",
+        "package_remaining": "XXX.XX TB",
+        "package_remaining_ratio": "XX.XX%",
+        "deductible_package_count": 1,
+        "billing_mode": "resource_package"
+      },
+      {
+        "package_type": "下行流量",
+        "region_label": "亚太3区",
+        "package_total": "/",
+        "current_month_usage": "XX.XX MB",
+        "package_remaining": "/",
+        "package_remaining_ratio": "/",
+        "deductible_package_count": 0,
+        "billing_mode": "postpaid"
+      }
+    ]
+  },
+  "report_compatibility": {
+    "weekly_alignment": "not_exact",
+    "reason": "CDN 概览页展示的是当月累计用量，资源包管理页展示的是总量递减型资源包当前剩余量；两者共同作为周报背景信息，不代表严格按周扣减。"
+  },
+  "report_highlights": [
+    "当前账号下共有 X 个 CDN 域名，概览页显示 X 个均处于正常运行。",
+    "截至 YYYY-MM-DD，XX 区域下行流量当月累计 XXX.XX GB，是当前资源包消耗的主要区域。",
+    "近 7 天带宽峰值为 XXX.XX Mbps。"
+  ],
+  "notes": [
+    "package_remaining_ratio 为根据资源包管理页显示的总量与剩余量推导值。",
+    "域名清单沿用最近一次完整盘点结果。"
+  ]
+}
