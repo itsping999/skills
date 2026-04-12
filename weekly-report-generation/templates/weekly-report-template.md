@@ -22,7 +22,7 @@
 - 严重度分布建议覆盖：`P0/P1/P2` 故障数。
 - 交付质量建议覆盖：`发布次数`、`发布成功率`、`回滚次数`、`变更失败率（CFR）`。
 - 正文不再维护资源聚合热点，资源观察以下沉后的组件附录为准。
-- 附录应优先消费 `data/aliyun/ecs`、`data/aliyun/rds`、`data/aliyun/redis`、`data/aliyun/mongodb`、`data/aliyun/slb`、`data/aliyun/cdn`、`data/aliyun/eip` 下的已拉取数据，并按组件分段展示。
+- 附录应优先消费 `<data_root>/ecs`、`<data_root>/rds`、`<data_root>/redis`、`<data_root>/mongodb`、`<data_root>/slb`、`<data_root>/cdn`、`<data_root>/eip` 下的已拉取数据，并按组件分段展示。
 - 每个组件附录除资源明细外，还应基于真实指标生成“重点观察”与“建议与改进措施”，用于沉淀注意点和后续动作。
 - 周报成文不展示源数据文件路径；源文件路径只用于执行反馈、排障和追溯。
 

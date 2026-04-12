@@ -1,0 +1,95 @@
+{
+  "scope": {
+    "resource_type": "SMS usage",
+    "scope_type": "account_level",
+    "region_id": "cn-hangzhou",
+    "selection_basis": "当前已登录目标云平台会话（默认阿里云）下短信概览与费用页面可见数据"
+  },
+  "collection": {
+    "source": "Cloud Provider SMS console",
+    "dashboard_view": "短信概览 + 费用统计",
+    "apis_observed": [
+      "QuerySmsStatisticsNew",
+      "QueryPackageSummary",
+      "QuerySmsBaseScreenNew",
+      "GetUserBill"
+    ]
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "source": "invocation.time_window"
+  },
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "metric_coverage": {
+    "core_metrics": [
+      "total_sent",
+      "success_count",
+      "failed_count",
+      "success_rate",
+      "domestic_package_remaining",
+      "monthly_bill_amount"
+    ],
+    "extended_metrics_available": [
+      "international_sms_status",
+      "international_sent_count",
+      "daily_send_trend",
+      "bill_item_breakdown"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "usage_overview": {
+    "domestic": {
+      "total_sent": 3483,
+      "success_count": 3439,
+      "failed_count": 35,
+      "success_rate": 0.9874,
+      "package_remaining": {
+        "value": 12000,
+        "unit": "count"
+      }
+    },
+    "international": {
+      "status": "not_enabled/not_observed/enabled",
+      "sent_count": 0,
+      "notes": "如未开通，保持 not_enabled，不要写成 0 代表成功发送。"
+    },
+    "daily_series": [
+      {
+        "date": "YYYY-MM-DD",
+        "total": 120,
+        "success": 118,
+        "fail": 2,
+        "success_rate": 0.9833
+      }
+    ]
+  },
+  "billing_overview": {
+    "bill_month": "YYYY-MM",
+    "payable_amount": 25.8,
+    "original_amount": 25.8,
+    "discount_amount": 0,
+    "items": [
+      {
+        "commodity_name": "国内短信",
+        "commodity_code": "sms_domestic",
+        "expense_item_name": "短信发送",
+        "use_amount": 3483,
+        "payable_bill_amount": 25.8
+      }
+    ]
+  },
+  "report_compatibility": {
+    "weekly_alignment": "partial",
+    "reason": "若控制台只提供账单月累计，周口径需从 daily_series 裁剪。"
+  },
+  "report_highlights": [
+    "在统计窗口内共发送短信 X 条，成功率约为 XX.XX%。",
+    "当前国内短信套餐余量为 X 条。"
+  ],
+  "notes": [
+    "统计时间范围严格来自调用参数 time_window。",
+    "国际短信状态以控制台真实可见项为准。"
+  ]
+}

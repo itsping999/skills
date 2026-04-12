@@ -1,0 +1,64 @@
+{
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "period": {
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "snapshot_date": "YYYY-MM-DD",
+    "timezone": "Asia/Shanghai"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "snapshot_date": "YYYY-MM-DD",
+    "source": "invocation.time_window"
+  },
+  "total_instances": 26,
+  "metric_scope": "all",
+  "metric_coverage": {
+    "requested_scope": "all",
+    "core_metrics": [
+      "CPUUtilization",
+      "vm.MemoryUtilization",
+      "vm.DiskUtilization(mount=/)",
+      "concurrentConnections"
+    ],
+    "extended_metrics_available": [
+      "ConnectionUtilization",
+      "load_1m",
+      "load_5m",
+      "load_15m",
+      "DiskReadBPS",
+      "DiskWriteBPS",
+      "IntranetInRate",
+      "IntranetOutRate"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "notes": [
+    "本文件基于 YYYY-MM-DD 当天 ECS 控制台监控快照生成，用于表示 YYYY-MM-DD 至 YYYY-MM-DD 统计窗口内的 ECS 结构化视图。",
+    "当前按全量 N 台实例拉取 CPU、内存、磁盘和连接数四项核心指标。"
+  ],
+  "items": [
+    {
+      "instance_id": "i-xxxxxxxxxxxx",
+      "instance_name": "实例名称",
+      "region_id": "cn-shenzhen",
+      "zone_id": "cn-shenzhen-b",
+      "status": "Running",
+      "cpu_cores": 2,
+      "memory_mib": 4096,
+      "metrics": {
+        "cpu": { "status": "ok", "samples": 958, "avg": "placeholder", "latest": "placeholder" },
+        "memory": { "status": "ok", "samples": 958, "avg": "placeholder", "latest": "placeholder" },
+        "disk": { "status": "ok", "samples": 958, "avg": "placeholder", "latest": "placeholder", "mountpoint": "/" },
+        "conn": { "status": "ok", "samples": 955, "avg": "placeholder", "latest": "placeholder" },
+        "extended": {
+          "DiskReadBPS": { "status": "ok/no_data", "samples": 958, "avg": "placeholder", "latest": "placeholder" },
+          "DiskWriteBPS": { "status": "ok/no_data", "samples": 958, "avg": "placeholder", "latest": "placeholder" },
+          "load_1m": { "status": "ok/no_data", "samples": 958, "avg": "placeholder", "latest": "placeholder" }
+        }
+      }
+    }
+  ]
+}

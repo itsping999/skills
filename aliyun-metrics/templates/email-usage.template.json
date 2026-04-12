@@ -1,0 +1,132 @@
+{
+  "scope": "cn-hangzhou",
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "intended_use": "weekly_report_appendix_and_delivery_quality_tracking",
+  "collection": {
+    "product": "cloud-directmail",
+    "console": "dm",
+    "source_type": [
+      "console_snapshot",
+      "network_api"
+    ],
+    "region": "cn-hangzhou",
+    "sender_address": "noreply@mail.iotbus.net"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "source": "invocation.time_window"
+  },
+  "metric_scope": "all",
+  "metric_coverage": {
+    "core_metrics": [
+      "total_sent",
+      "success_count",
+      "failed_count",
+      "invalid_address_count",
+      "success_rate_excluding_invalid",
+      "daily_send_trend"
+    ],
+    "extended_metrics_available": [
+      "account_quota_level",
+      "daily_quota",
+      "monthly_quota",
+      "domains_count",
+      "mail_addresses_count",
+      "validation_quota",
+      "report_blocklist_count",
+      "recent_send_detail_sample"
+    ],
+    "extended_metrics_unavailable": [
+      "config_set_dimension",
+      "dedicated_ip_pool_dimension",
+      "geo_split",
+      "isp_split"
+    ]
+  },
+  "account_overview": {
+    "user_status": "normal",
+    "user_status_code": 0,
+    "quota_level": 6,
+    "quota_level_label": "6（略有小成）",
+    "max_quota_level": 10,
+    "daily_quota": 20000,
+    "month_quota": 600000,
+    "remain_free_quota": 0,
+    "daily_remain_free_quota": 0,
+    "domains": 1,
+    "mail_addresses": 1,
+    "templates": 1,
+    "tags": 0,
+    "validation_quota_total": 10,
+    "validation_quota_used": 0,
+    "sendify_opened": false,
+    "sendify_trial_supported": true
+  },
+  "send_statistics": {
+    "split_dimension": "not_exposed",
+    "daily": [
+      {
+        "date": "YYYY-MM-DD",
+        "total": 1436,
+        "success": 1425,
+        "fail": 5,
+        "invalid": 6,
+        "success_rate": "99.65%",
+        "invalid_rate": "0.42%"
+      }
+    ],
+    "summary": {
+      "total": 12721,
+      "success": 12509,
+      "fail": 76,
+      "invalid": 136,
+      "success_rate_excluding_invalid_pct": 99.4
+    }
+  },
+  "extended_observations": {
+    "unsubscribe_count": 0,
+    "report_count": 4,
+    "report_samples": [
+      {
+        "BlockEmail": "example@example.com",
+        "SendTime": 1771762978,
+        "BlockTime": 1771762998,
+        "SenderEmail": "noreply@mail.iotbus.net",
+        "Reason": 0
+      }
+    ],
+    "recent_send_detail_sample": [
+      {
+        "Status": 0,
+        "ErrorClassification": "SendOk",
+        "Message": "250 Send Mail OK",
+        "LastUpdateTime": "YYYY-MM-DDTHH:MMZ",
+        "ToAddress": "user@example.com",
+        "Subject": "示例邮件主题",
+        "AccountName": "noreply@mail.iotbus.net"
+      }
+    ]
+  },
+  "permission_findings": {
+    "config_set_status": "NoPermission",
+    "config_set_message": "You are not authorized to perform this action.",
+    "dedicated_ip_pool_status": "NoPermission",
+    "dedicated_ip_pool_message": "You are not authorized to perform this action."
+  },
+  "report_compatibility": {
+    "appendix_ready": true,
+    "weekly_alignment": "exact",
+    "reason": "listStatistics 已按调用时间窗口精确查询。"
+  },
+  "report_highlights": [
+    "邮件推送在 YYYY-MM-DD 至 YYYY-MM-DD 共发送 XXXXX 封，成功 XXXXX 封。",
+    "剔除无效地址后的整体成功率约 XX.XX%。",
+    "垃圾举报名单 X 条，退订名单 X 条。"
+  ],
+  "notes": [
+    "邮件推送控制台当前未展示国内/国外拆分维度。",
+    "ConfigSet 与 Dedicated IP Pool 可能受 RAM 权限限制。"
+  ]
+}

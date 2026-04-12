@@ -1,0 +1,101 @@
+{
+  "scope": {
+    "resource_type": "RDS Redis",
+    "region_id": "cn-shenzhen",
+    "region_name": "示例地域（可替换）",
+    "instance_count": 1,
+    "selection_basis": "当前已登录目标云平台会话（默认阿里云）下，当前选定地域可见的 Redis 实例"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "snapshot_date": "YYYY-MM-DD",
+    "source": "invocation.time_window"
+  },
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "metric_scope": "all",
+  "metric_coverage": {
+    "requested_scope": "all",
+    "core_metrics": [
+      "redis.instantaneous_ops_per_sec",
+      "redis.get_qps",
+      "redis.put_qps",
+      "redis.connected_clients",
+      "redis.used_memory"
+    ],
+    "extended_metrics_available": [
+      "redis.keyspace_hits",
+      "redis.keyspace_misses",
+      "redis.hit_rate",
+      "redis.mem_fragmentation_ratio",
+      "redis.rejected_connections",
+      "redis.blocked_clients"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "instances": [
+    {
+      "instance": {
+        "id": "r-xxxxxxxxxxxx",
+        "name": "实例名称",
+        "role": "master"
+      },
+      "metrics": {
+        "ops_per_sec": {
+          "status": "ok/no_data",
+          "metric_name": "redis.instantaneous_ops_per_sec",
+          "summary": {
+            "sample_count": 0,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "connected_clients": {
+          "status": "ok",
+          "metric_name": "redis.connected_clients",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "used_memory_bytes": {
+          "status": "ok",
+          "metric_name": "redis.used_memory",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "extended_metrics": {
+          "hit_rate": {
+            "status": "ok/no_data",
+            "metric_name": "redis.hit_rate",
+            "summary": {
+              "sample_count": 461,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          },
+          "mem_fragmentation_ratio": {
+            "status": "ok/no_data",
+            "metric_name": "redis.mem_fragmentation_ratio",
+            "summary": {
+              "sample_count": 461,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "report_highlights": [
+    "Redis 平均连接数约为 XXXX.XX，已用内存平均约为 XXX.XX MB。"
+  ],
+  "notes": [
+    "该文件基于 YYYY-MM-DD 当天 DAS 指标摘要生成，用于表示 YYYY-MM-DD 至 YYYY-MM-DD 统计窗口内的 Redis 结构化视图。"
+  ]
+}

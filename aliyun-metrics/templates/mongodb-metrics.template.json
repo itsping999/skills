@@ -1,0 +1,120 @@
+{
+  "scope": {
+    "resource_type": "RDS MongoDB",
+    "region_id": "cn-shenzhen",
+    "region_name": "示例地域（可替换）",
+    "instance_count": 1,
+    "selection_basis": "当前已登录目标云平台会话（默认阿里云）下，当前选定地域可见的 MongoDB 实例"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "snapshot_date": "YYYY-MM-DD",
+    "source": "invocation.time_window"
+  },
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "metric_scope": "all",
+  "metric_coverage": {
+    "requested_scope": "all",
+    "core_metrics": [
+      "mongodb.opcounters.query",
+      "mongodb.opcounters.insert",
+      "mongodb.opcounters.update",
+      "mongodb.opcounters.delete",
+      "mongodb.connections.current"
+    ],
+    "extended_metrics_available": [
+      "mongodb.network.bytesIn",
+      "mongodb.network.bytesOut",
+      "mongodb.network.numRequests",
+      "mongodb.mem.resident",
+      "mongodb.mem.virtual",
+      "mongodb.page_faults"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "instances": [
+    {
+      "instance": {
+        "id": "dds-xxxxxxxxxxxx",
+        "name": "实例名称",
+        "role": "secondary"
+      },
+      "metrics": {
+        "query_ops_per_sec": {
+          "status": "ok",
+          "metric_name": "mongodb.opcounters.query",
+          "summary": {
+            "sample_count": 462,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "update_ops_per_sec": {
+          "status": "ok",
+          "metric_name": "mongodb.opcounters.update",
+          "summary": {
+            "sample_count": 462,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "current_connections": {
+          "status": "ok",
+          "metric_name": "mongodb.connections.current",
+          "summary": {
+            "sample_count": 462,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "network_requests": {
+          "status": "ok",
+          "metric_name": "mongodb.network.numRequests",
+          "summary": {
+            "sample_count": 462,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "page_faults": {
+          "status": "ok",
+          "metric_name": "mongodb.page_faults",
+          "summary": {
+            "sample_count": 462,
+            "point_value_avg": 0,
+            "latest_value": 0
+          }
+        },
+        "extended_metrics": {
+          "mongodb.mem.resident": {
+            "status": "ok/no_data",
+            "metric_name": "mongodb.mem.resident",
+            "summary": {
+              "sample_count": 462,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          },
+          "mongodb.mem.virtual": {
+            "status": "ok/no_data",
+            "metric_name": "mongodb.mem.virtual",
+            "summary": {
+              "sample_count": 462,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "report_highlights": [
+    "MongoDB 平均 Query OPS 约为 XX.XX，Update OPS 约为 XX.XX。",
+    "当前连接数平均约为 XXX.XX，未观测到 page faults。"
+  ],
+  "notes": [
+    "该文件基于 YYYY-MM-DD 当天 DAS 指标摘要生成，用于表示 YYYY-MM-DD 至 YYYY-MM-DD 统计窗口内的 MongoDB 结构化视图。"
+  ]
+}

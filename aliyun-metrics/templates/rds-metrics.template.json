@@ -1,0 +1,230 @@
+{
+  "scope": {
+    "resource_type": "RDS MySQL",
+    "region_id": "cn-shenzhen",
+    "region_name": "示例地域（可替换）",
+    "instance_count": 2,
+    "selection_basis": "当前已登录目标云平台会话（默认阿里云）下，当前选定地域可见的 MySQL RDS 实例"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "snapshot_date": "YYYY-MM-DD",
+    "source": "invocation.time_window"
+  },
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "metric_scope": "all",
+  "metric_coverage": {
+    "requested_scope": "all",
+    "core_metrics": [
+      "cpu_usage",
+      "mem_usage",
+      "disk_usage",
+      "total_session",
+      "conn_usage",
+      "qps",
+      "tps"
+    ],
+    "extended_metrics_available": [
+      "threads_running",
+      "read_iops",
+      "write_iops",
+      "read_throughput",
+      "write_throughput",
+      "com_select",
+      "com_insert",
+      "com_update",
+      "com_delete"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "report_highlights": [
+    "两台 MySQL RDS 聚合平均 CPU 使用率约为 XX.XX%，内存使用率约为 XX.XX%。",
+    "两台 MySQL RDS 聚合平均磁盘利用率约为 XX.XX%，连接使用率约为 XX.XX%。",
+    "聚合平均 QPS 约为 XXX.XX，慢查询速率整体接近 0。"
+  ],
+  "aggregate_metrics": {
+    "cpu_usage_percent": {
+      "status": "ok",
+      "metric_name": "cpu_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    },
+    "memory_usage_percent": {
+      "status": "ok",
+      "metric_name": "memory_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    },
+    "disk_usage_percent": {
+      "status": "ok",
+      "metric_name": "disk_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    },
+    "connection_usage_percent": {
+      "status": "ok",
+      "metric_name": "connection_usage_percent",
+      "unit": "%",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    },
+    "qps": {
+      "status": "ok",
+      "metric_name": "qps",
+      "unit": "count",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    },
+    "threads_running": {
+      "status": "ok/no_data",
+      "metric_name": "threads_running",
+      "unit": "count",
+      "source": "aggregated_das_metric",
+      "summary": {
+        "sample_count": 2,
+        "point_value_avg": "placeholder",
+        "latest_value": "placeholder"
+      }
+    }
+  },
+  "database_risk_metrics": {
+    "notes": [
+      "当前文件以 YYYY-MM-DD 当天可见 DAS 聚合值表示当前统计窗口的风险画像。",
+      "row_lock_wait_time_avg_ms 与 row_lock_waits_per_sec 用于观察 InnoDB 行锁等待时延与频率。"
+    ],
+    "aggregate": {
+      "slow_queries_per_sec": {
+        "status": "ok",
+        "metric_name": "slow_queries_per_sec",
+        "unit": "count",
+        "summary": {
+          "sample_count": 2,
+          "point_value_avg": "placeholder",
+          "latest_value": "placeholder"
+        }
+      }
+    }
+  },
+  "instances": [
+    {
+      "instance": {
+        "id": "rr-xxxxxxxxxxxx",
+        "name": "实例名称",
+        "role": "slave"
+      },
+      "metrics": {
+        "cpu_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "memory_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "disk_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "total_session_count": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "qps": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "tps": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "connection_usage_percent": {
+          "status": "ok",
+          "summary": {
+            "sample_count": 461,
+            "point_value_avg": "placeholder",
+            "latest_value": "placeholder"
+          }
+        },
+        "extended_metrics": {
+          "read_iops": {
+            "status": "ok/no_data",
+            "summary": {
+              "sample_count": 461,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          },
+          "write_iops": {
+            "status": "ok/no_data",
+            "summary": {
+              "sample_count": 461,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          },
+          "threads_running": {
+            "status": "ok/no_data",
+            "summary": {
+              "sample_count": 461,
+              "point_value_avg": "placeholder",
+              "latest_value": "placeholder"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "notes": [
+    "该文件基于 YYYY-MM-DD 当天 DAS 指标摘要生成，用于表示 YYYY-MM-DD 至 YYYY-MM-DD 统计窗口内的 MySQL 结构化视图。",
+    "后续如需要严格周窗口统计，应补充完整周时间序列导出。"
+  ]
+}

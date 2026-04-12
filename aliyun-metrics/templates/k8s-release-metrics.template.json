@@ -1,0 +1,93 @@
+{
+  "scope": "prod",
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "intended_use": "weekly_report_delivery_quality_and_change_risk",
+  "collection": {
+    "product": "cloud-ack",
+    "console": "ack-workload-deployment-list",
+    "cluster_id": "c95cb180c34ed473c8177f9371479b1e1",
+    "cluster_name": "k8s-prod",
+    "region": "cn-shenzhen",
+    "namespace": "prod",
+    "source_type": [
+      "console_snapshot",
+      "raw_api_response"
+    ]
+  },
+  "period": {
+    "start": "YYYY-MM-DD",
+    "end": "YYYY-MM-DD",
+    "timezone": "Asia/Shanghai"
+  },
+  "time_window": {
+    "start": "YYYY-MM-DD HH:MM:SS",
+    "end": "YYYY-MM-DD HH:MM:SS",
+    "timezone": "Asia/Shanghai",
+    "source": "invocation.time_window"
+  },
+  "metric_scope": "all",
+  "metric_coverage": {
+    "requested_scope": "all",
+    "core_metrics": [
+      "release_count",
+      "release_success_rate",
+      "rollback_count",
+      "change_failure_rate"
+    ],
+    "extended_metrics_available": [
+      "failed_release_count",
+      "rollback_rate",
+      "deployment_frequency_by_app",
+      "lead_time_for_change_p50_minutes",
+      "release_duration_p95_minutes",
+      "change_batch_size_avg"
+    ],
+    "extended_metrics_unavailable": []
+  },
+  "release_metrics": {
+    "release_count": 6,
+    "release_success_rate": "100.00%",
+    "rollback_count": 0,
+    "change_failure_rate": "0.00%",
+    "failure_rate": "0.00%"
+  },
+  "extended_release_metrics": {
+    "requested_scope": "all",
+    "failed_release_count": 0,
+    "rollback_rate": "0.00%",
+    "deployment_frequency_by_app": [
+      {
+        "app": "deployment-name",
+        "release_count": 2
+      }
+    ],
+    "lead_time_for_change_p50_minutes": 0,
+    "lead_time_for_change_p90_minutes": 0,
+    "release_duration_p50_minutes": 0,
+    "release_duration_p95_minutes": 0,
+    "change_batch_size_avg": 0,
+    "unavailable_metrics": []
+  },
+  "changed_deployments": [
+    {
+      "name": "deployment-name",
+      "namespace": "prod",
+      "image": "registry-vpc.registry.example.com/xxx/xxx:tag",
+      "completed_at": "YYYY-MM-DDTHH:MM:SS+08:00",
+      "status": "success"
+    }
+  ],
+  "report_compatibility": {
+    "section": "交付质量与变更风险",
+    "ops_release": {
+      "release_count": "X",
+      "release_success_rate": "XXX.XX%",
+      "rollback_count": "placeholder",
+      "change_failure_rate": "X.XX%"
+    }
+  },
+  "notes": [
+    "本次统计基于 ACK 集群在 prod 命名空间的 Deployment 列表。",
+    "发布次数按统计窗口内 Deployment 的成功发布时间计算。"
+  ]
+}
