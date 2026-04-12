@@ -635,6 +635,14 @@ def parse_annual_markdown_rows(md_path: Path) -> list[dict[str, str]]:
         link_match = link_pattern.search(cells[-1])
         if link_match:
             report_path = link_match.group(1)
+        elif normalize_string(cells[-1]).endswith(".md"):
+            incident_year = ""
+            try:
+                incident_year = str(parse_datetime(cells[1]).year)
+            except ValueError:
+                pass
+            if incident_year:
+                report_path = f"../{incident_year}/{normalize_string(cells[-1])}"
 
         if len(cells) == 8:
             rows.append(
@@ -725,11 +733,11 @@ def render_annual_markdown(year: int, rows: list[dict[str, str]]) -> str:
 
     body_lines = []
     for row in rows:
-        report_rel = row["report_path"] or f"../{year}/{row['incident_id']}.md"
+        report_label = f"{row['incident_id']}.md"
         body_lines.append(
             "| {incident_id} | {occurred_at} | {title} | {severity} | {system} | {region} | {status} | "
             "{mttr} | {user_impact} | {recurrence_risk} | {open_action_items} | {owner} | "
-            "[查看报告]({report_rel}) |".format(
+            "{report_label} |".format(
                 incident_id=sanitize_table_cell(row.get("incident_id", "")),
                 occurred_at=sanitize_table_cell(row.get("occurred_at", "")),
                 title=sanitize_table_cell(row.get("title", "")),
@@ -746,7 +754,7 @@ def render_annual_markdown(year: int, rows: list[dict[str, str]]) -> str:
                     row.get("open_action_items", "") or "0"
                 ),
                 owner=sanitize_table_cell(row.get("owner", "")),
-                report_rel=report_rel,
+                report_label=sanitize_table_cell(report_label),
             )
         )
     if not body_lines:

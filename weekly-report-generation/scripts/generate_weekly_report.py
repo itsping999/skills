@@ -450,6 +450,14 @@ def parse_annual_rows(path: Path) -> list[dict[str, str]]:
         link_match = link_pattern.search(cells[-1])
         if link_match:
             report_path = link_match.group(1)
+        elif normalize_string(cells[-1]).endswith(".md"):
+            incident_year = ""
+            try:
+                incident_year = str(parse_datetime(cells[1]).year)
+            except ValueError:
+                pass
+            if incident_year:
+                report_path = f"../{incident_year}/{normalize_string(cells[-1])}"
 
         if len(cells) >= 13:
             rows.append(
@@ -634,10 +642,7 @@ def build_incidents_from_annual(
         report_rel = row.get("report_path", "")
         report_abs = (annual_dir / report_rel).resolve() if report_rel else Path("")
         resolved_at = extract_resolved_time(report_abs) if report_rel else "未填写"
-        cause = "详见事故报告"
-        if report_rel:
-            incident_year = row["occurred_dt"].year
-            cause = f"[{row['incident_id']}](../../incidents/{incident_year}/{row['incident_id']}.md)"
+        cause = row["incident_id"]
 
         records.append(
             {
@@ -684,10 +689,7 @@ def build_historical_incidents_from_annual(
         report_rel = row.get("report_path", "")
         report_abs = (annual_dir / report_rel).resolve() if report_rel else Path("")
         resolved_at = extract_resolved_time(report_abs) if report_rel else "未填写"
-        cause = "详见事故报告"
-        if report_rel:
-            incident_year = row["occurred_dt"].year
-            cause = f"[{row['incident_id']}](../../incidents/{incident_year}/{row['incident_id']}.md)"
+        cause = row["incident_id"]
         records.append(
             {
                 "no": str(idx),
@@ -2011,6 +2013,8 @@ def parse_weekly_index(path: Path) -> list[dict[str, str]]:
         link_match = link_pattern.search(cells[7])
         if link_match:
             report_path = link_match.group(1)
+        elif cells[7] not in {"", "-", "无", "未生成"}:
+            report_path = cells[7]
         rows.append(
             {
                 "period": cells[0],
@@ -2056,8 +2060,9 @@ def render_weekly_index(rows: list[dict[str, str]]) -> str:
     )
     lines: list[str] = []
     for row in rows:
+        report_display = row["report_path"] or "未生成"
         lines.append(
-            "| {period} | {infra} | {app} | {business} | {incident_count} | {mttr} | {note} | [查看报告]({report_path}) |".format(
+            "| {period} | {infra} | {app} | {business} | {incident_count} | {mttr} | {note} | {report_display} |".format(
                 period=sanitize_table_cell(row["period"]),
                 infra=sanitize_table_cell(row["infra"]),
                 app=sanitize_table_cell(row["app"]),
@@ -2065,7 +2070,7 @@ def render_weekly_index(rows: list[dict[str, str]]) -> str:
                 incident_count=sanitize_table_cell(row["incident_count"]),
                 mttr=sanitize_table_cell(row["mttr"]),
                 note=sanitize_table_cell(row["note"]),
-                report_path=row["report_path"],
+                report_display=sanitize_table_cell(report_display),
             )
         )
     if not lines:
