@@ -182,6 +182,22 @@ def format_minutes_value(minutes: float | None) -> str:
     return f"{minutes:.1f} 分钟"
 
 
+def format_interval_minutes_value(minutes: float | None) -> str:
+    if minutes is None:
+        return "未填写"
+    total_minutes = max(0, int(round(minutes)))
+    days, remainder = divmod(total_minutes, 24 * 60)
+    hours, mins = divmod(remainder, 60)
+    parts: list[str] = []
+    if days:
+        parts.append(f"{days} 天")
+    if hours:
+        parts.append(f"{hours} 小时")
+    if mins or not parts:
+        parts.append(f"{mins} 分钟")
+    return " ".join(parts)
+
+
 def format_percent_value(value: float) -> str:
     if abs(value - 100.0) < 1e-9:
         return "100%"
@@ -316,6 +332,7 @@ def infer_weekly_reliability_from_annual(
     mttd_minutes: list[float] = []
     mtta_minutes: list[float] = []
     severity_counts = {"P0": 0, "P1": 0, "P2": 0}
+    matched_incident_count = 0
 
     for row in rows:
         if target_ids and row["incident_id"] not in target_ids:
@@ -326,6 +343,7 @@ def infer_weekly_reliability_from_annual(
             continue
         if not (week_start <= occurred_dt.date() <= week_end):
             continue
+        matched_incident_count += 1
 
         severity = normalize_string(row.get("severity", "")).upper()
         if severity in severity_counts:
@@ -353,6 +371,9 @@ def infer_weekly_reliability_from_annual(
 
     avg_mttd = sum(mttd_minutes) / len(mttd_minutes) if mttd_minutes else None
     avg_mtta = sum(mtta_minutes) / len(mtta_minutes) if mtta_minutes else None
+    if matched_incident_count == 0:
+        avg_mttd = 0.0
+        avg_mtta = 0.0
     return {"mttd": avg_mttd, "mtta": avg_mtta, "severity_counts": severity_counts}
 
 
@@ -491,6 +512,21 @@ def collect_annual_rows(
     return rows
 
 
+def find_annual_year_range(incidents_dir: Path) -> tuple[int | None, int | None]:
+    annual_dir = incidents_dir / "annual"
+    if not annual_dir.exists():
+        return None, None
+
+    years: list[int] = []
+    for path in annual_dir.glob("*.md"):
+        if not path.stem.isdigit():
+            continue
+        years.append(int(path.stem))
+    if not years:
+        return None, None
+    return min(years), max(years)
+
+
 def load_incident_records(
     incidents_dir: Path,
     period_start: date,
@@ -554,6 +590,32 @@ def calculate_availability_metrics(
     month_start = week_end.replace(day=1)
     year_start = date(week_end.year, 1, 1)
     incident_records = load_incident_records(incidents_dir, year_start, week_end, incident_ids)
+    annual_start_year, _ = find_annual_year_range(incidents_dir)
+    mtbf_start = date(annual_start_year, 1, 1) if annual_start_year is not None else year_start
+    mtbf_records = load_incident_records(incidents_dir, mtbf_start, week_end, incident_ids)
+
+    def calculate_mtbf(window_start: datetime, window_end: datetime) -> str:
+        occurred_in_window = sorted(
+            record["occurred_at"]
+            for record in mtbf_records
+            if window_start <= record["occurred_at"] < window_end
+        )
+        if len(occurred_in_window) >= 2:
+            intervals = [
+                (current - previous).total_seconds() / 60
+                for previous, current in zip(occurred_in_window, occurred_in_window[1:])
+            ]
+            return format_interval_minutes_value(sum(intervals) / len(intervals))
+
+        occurred_before_end = sorted(
+            record["occurred_at"]
+            for record in mtbf_records
+            if record["occurred_at"] < window_end
+        )
+        if occurred_before_end:
+            elapsed = (window_end - occurred_before_end[-1]).total_seconds() / 60
+            return f"≥ {format_interval_minutes_value(elapsed)}"
+        return "无故障发生"
 
     def summarize(period_start: date, period_end: date) -> dict[str, str]:
         window_start, window_end = period_bounds(period_start, period_end)
@@ -589,7 +651,7 @@ def calculate_availability_metrics(
             summary["mttr"] = format_minutes_value(avg_mttr)
         else:
             summary["mttr"] = "0 分钟"
-        summary["mtbf"] = "未填写"
+        summary["mtbf"] = calculate_mtbf(window_start, window_end)
         return summary
 
     return {
@@ -1168,9 +1230,11 @@ def collect_appendix_sources(data_root: Path, week_start: str, week_end: str) ->
         "rds": matching_files("rds", "rds-metrics."),
         "redis": matching_files("redis", "redis-metrics."),
         "mongodb": matching_files("mongodb", "mongodb-metrics."),
+        "k8s": matching_files("k8s", "k8s-release-metrics."),
         "slb": snapshot_files_within_week("slb", "slb-metrics."),
         "cdn": matching_files("cdn", "cdn-usage."),
         "eip": snapshot_files_within_week("eip", "eip-load."),
+        "certificates": snapshot_files_within_week("certificates", "certificate-expiry."),
     }
 
 
@@ -1208,6 +1272,50 @@ def load_nginx_traffic_metrics(
             normalize_float(metrics.get("response_p99_seconds")),
         ),
     }
+
+
+def load_k8s_release_metrics(data_root: Path, week_start: date, week_end: date) -> dict[str, str]:
+    sources = collect_appendix_sources(data_root, week_start.isoformat(), week_end.isoformat())
+    files = sources.get("k8s") or []
+    if not files:
+        return {}
+
+    payload = load_json(files[-1])
+    compatibility = get_nested(payload, "report_compatibility", "ops_release")
+    if not isinstance(compatibility, dict):
+        compatibility = {}
+    metrics = payload.get("release_metrics")
+    if not isinstance(metrics, dict):
+        metrics = {}
+
+    return {
+        "release_count": normalize_string(compatibility.get("release_count") or metrics.get("release_count")),
+        "release_success_rate": normalize_string(
+            compatibility.get("release_success_rate") or metrics.get("release_success_rate")
+        ),
+        "rollback_count": normalize_string(compatibility.get("rollback_count") or metrics.get("rollback_count")),
+        "change_failure_rate": normalize_string(
+            compatibility.get("change_failure_rate") or metrics.get("change_failure_rate")
+        ),
+    }
+
+
+def load_certificate_expiry_summary(data_root: Path, week_start: date, week_end: date) -> dict[str, str]:
+    sources = collect_appendix_sources(data_root, week_start.isoformat(), week_end.isoformat())
+    files = sources.get("certificates") or []
+    if not files:
+        return {}
+
+    payload = load_json(files[-1])
+    summary = normalize_string(get_nested(payload, "report_compatibility", "suggested_summary"))
+    if not summary:
+        overview = payload.get("overview")
+        if isinstance(overview, dict):
+            earliest_expiry = normalize_string(overview.get("earliest_expiry"))
+            remaining_days = normalize_string(overview.get("earliest_remaining_days"))
+            if earliest_expiry and remaining_days:
+                summary = f"均大于15天（最早 {earliest_expiry}，剩余 {remaining_days} 天）。"
+    return {"cert_expiry": summary} if summary else {}
 
 
 def flatten_texts(value: Any) -> list[str]:
@@ -1678,6 +1786,23 @@ def render_slb_appendix(files: list[Path], report_path: Path) -> str:
     return render_component_block("5.5 SLB", files, body_parts, report_path)
 
 
+def cdn_remaining_ratio_text(item: dict[str, Any]) -> str:
+    ratio_text = normalize_string(item.get("package_remaining_ratio"))
+    if ratio_text:
+        return ratio_text
+    ratio_percent = normalize_float(item.get("package_remaining_ratio_percent"))
+    if ratio_percent is None:
+        return "/"
+    return f"{ratio_percent:.2f}%"
+
+
+def cdn_remaining_ratio_value(item: dict[str, Any]) -> float | None:
+    ratio = item.get("package_remaining_ratio")
+    if not normalize_string(ratio):
+        ratio = item.get("package_remaining_ratio_percent")
+    return extract_first_number(ratio)
+
+
 def render_cdn_appendix(files: list[Path], report_path: Path) -> str:
     if not files:
         return render_component_block("5.6 CDN", [], ["- 未找到 CDN 资源包与带宽快照。"], report_path)
@@ -1699,7 +1824,7 @@ def render_cdn_appendix(files: list[Path], report_path: Path) -> str:
             normalize_string(item.get("package_total")) or "/",
             normalize_string(item.get("current_month_usage")) or "-",
             normalize_string(item.get("package_remaining")) or "/",
-            normalize_string(item.get("package_remaining_ratio")) or "/",
+            cdn_remaining_ratio_text(item),
             normalize_string(item.get("deductible_package_count")) or "-",
             {
                 "resource_package": "资源包抵扣",
@@ -1721,7 +1846,7 @@ def render_cdn_appendix(files: list[Path], report_path: Path) -> str:
         normalize_string(item.get("region_label"))
         for item in usage.get("package_usage_by_region", [])
         if (
-            (remaining_ratio := extract_first_number(item.get("package_remaining_ratio"))) is not None
+            (remaining_ratio := cdn_remaining_ratio_value(item)) is not None
             and remaining_ratio <= 10.0
         )
     ]
@@ -1884,7 +2009,7 @@ def render_weekly_markdown(record: dict[str, Any], data_root: Path, report_path:
         ["平均检测时长（MTTD）", record["reliability_metrics"]["mttd"], "从故障发生到被检测的平均时长"],
         ["平均响应时长（MTTA）", record["reliability_metrics"]["mtta"], "从检测到首次响应的平均时长"],
         ["平均恢复时长（MTTR）", record["reliability_metrics"]["mttr"], "从开始修复到恢复的平均时长"],
-        ["平均故障间隔时间（MTBF）", record["reliability_metrics"]["mtbf"], "故障之间的平均间隔"],
+        ["平均故障间隔时间（MTBF）", record["reliability_metrics"]["mtbf"], "相邻故障发生间隔；无相邻故障时为截至周期结束无故障间隔"],
     ]
 
     traffic_rows = [
@@ -2135,6 +2260,15 @@ def main() -> None:
         if nginx_metrics:
             existing_traffic = raw.get("traffic_metrics") if isinstance(raw.get("traffic_metrics"), dict) else {}
             raw["traffic_metrics"] = merge_dict_prefer_existing(existing_traffic, nginx_metrics)
+        data_root = Path(args.data_root)
+        k8s_release_metrics = load_k8s_release_metrics(data_root, parse_date(week_start_text), parse_date(week_end_text))
+        if k8s_release_metrics:
+            existing_ops = raw.get("ops_release") if isinstance(raw.get("ops_release"), dict) else {}
+            raw["ops_release"] = merge_dict_prefer_existing(existing_ops, k8s_release_metrics)
+        certificate_summary = load_certificate_expiry_summary(data_root, parse_date(week_start_text), parse_date(week_end_text))
+        if certificate_summary:
+            existing_monitor = raw.get("monitoring_security") if isinstance(raw.get("monitoring_security"), dict) else {}
+            raw["monitoring_security"] = merge_dict_prefer_existing(existing_monitor, certificate_summary)
     record = normalize_payload(
         raw,
         incidents_dir,
