@@ -60,6 +60,7 @@ Default assumptions:
   - search
   - favorites / 收藏
 - The desired folder may open in a file list view with `Upload` capability
+- The visible UI may be dynamic enough that direct click navigation is unreliable; when that happens, it is acceptable to use DingTalk Docs network responses in the current browser session to resolve the target folder node URL and navigate there directly
 
 Prefer reusing an existing DingTalk Docs tab. Open a new tab only if no suitable DingTalk Docs page is already available.
 
@@ -69,6 +70,7 @@ Prefer reusing an existing DingTalk Docs tab. Open a new tab only if no suitable
 2. Navigate to DingTalk Docs if needed.
 3. Dismiss onboarding popups, guide masks, and modal dialogs before interacting with the page.
 4. Go to the requested folder supplied by the caller.
+   - Prefer folder-node pages over search-result pages before uploading.
 5. Inspect whether a same-name file or document already exists in that folder.
 6. Follow the requested `if_exists` behavior:
    - `keep_both`: upload directly and let DingTalk keep both versions
@@ -88,6 +90,16 @@ Do not assume one fixed UI path. Use the most reliable route available in the cu
 3. Left navigation tree
 4. Breadcrumb backtracking from an already open document in the same area
 
+If UI clicks are unstable but the browser session is valid, use network-assisted navigation as a fallback:
+
+1. Inspect recent `chrome-devtools` network requests for favorites or search results.
+2. Prefer DingTalk Docs APIs that already expose the target folder entry in the current session, for example:
+   - favorites list endpoints such as `box/api/v2/star/list`
+   - search endpoints such as `cs/api/v1/search`
+3. Resolve the folder's node URL from the response payload.
+4. Navigate directly to that node URL.
+5. Confirm the folder page shows a folder/file count and folder-level `Upload` control before uploading.
+
 When the caller gives a folder name such as `云平台故障记录（2026）` or `平台运行情况`, treat it as a human-visible label, not a path ID.
 
 If multiple folders have the same name:
@@ -104,6 +116,7 @@ When uploading a file:
 - prefer `.md` files when the upstream skill already generated Markdown
 - preserve the original file name unless the caller explicitly requests renaming
 - use DingTalk's upload or import entry instead of editor typing whenever possible
+- on folder pages, prefer the folder-level `Upload -> Upload File` path instead of attempting to upload from search views or document pages
 
 If DingTalk imports `.md` as an online doc preview rather than a raw attachment, accept that behavior. The skill should not try to re-render the Markdown itself.
 
@@ -115,6 +128,7 @@ Before finishing, verify:
 - the uploaded item name matches the local file name or expected title
 - the uploaded item appears in the folder list
 - the resulting page URL is captured if available
+- if the upload produces a transient success toast or task panel, prefer verifying via the refreshed folder list rather than trusting the toast alone
 
 ## Failure Handling
 
@@ -122,8 +136,9 @@ If something goes wrong, prefer recoverable retries in this order:
 
 1. close popup / guide overlay
 2. re-focus the correct tab
-3. re-open the folder
+3. re-open the target folder as a real folder page instead of a search result page
 4. retry upload once
+5. if folder clicks still fail, fall back to resolving the folder node URL from network responses and navigate directly
 
 Stop and report instead of looping when:
 
@@ -167,3 +182,5 @@ Examples:
 - Use the latest snapshot before clicking or filling controls.
 - Prefer file upload controls over editor interactions.
 - Expect DingTalk file lists and upload dialogs to be dynamic; after each major navigation, take a fresh snapshot.
+- Search results and favorites views are useful for locating folders, but final upload should happen from the resolved folder page whenever possible.
+- When favorites already contains the target folder, it is often faster to resolve the folder via favorites list data than to keep retrying brittle UI clicks.
